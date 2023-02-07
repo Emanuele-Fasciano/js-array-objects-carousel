@@ -1,4 +1,6 @@
-// creo un array con SOLO il percorso delle immagini
+
+
+// creo un array di oggetti
 const images = [
     {
         image: 'img/01.webp',
@@ -23,6 +25,7 @@ const images = [
     }
 ];
 
+// INPUT ELEMENT
 // recupero il container delle slide dall' HTML
 const slidesContainerEl = document.querySelector(".items")
 // recupero i bottoni imgPrev e imgNext
@@ -32,9 +35,9 @@ const buttonNextEl = document.querySelector(".next")
 // assegno una variabile all immagine che sarà attiva
 let activeImage = 0;
 
-images.forEach((image, index) => {
+images.forEach((image, index) => { // itero tutti gli oggetti dell' array
 
-    // creo una LET con la classe da dare a TUTTE le slide
+    // creo un LET con la classe "item" da dare a TUTTE le slide
     let slideClasses = "item"
     
     // se è l'immagine è quella selezionata aggiungo la classe "active" a "item" 
@@ -45,17 +48,45 @@ images.forEach((image, index) => {
     
     // assegno a una CONST il tag item con dentro l'immagine e assegno le classi con "slideClasses"
     // e l'immagine da visualizzare con "currentImage"
-    const slide = `<div class="${slideClasses}">
-                    <img src="./${image.image}" alt="">
-                    <div class="details">
+    const slide = ` <div class="${slideClasses}">
+                      <img src="./${image.image}" alt="">
+                      <div class="details">
                         <h2>${image.title}</h2>
                         <p>${image.text}</p>
-                    </div>
-                </div>`
+                      </div>
+                    </div>`
     
     slidesContainerEl.innerHTML += slide
 
 });
+
+
+// creo un evento sul click del button prev
+buttonPrevEl.addEventListener(
+    "click",
+    function () {
+
+        //recupero tutte le slides
+        const slides = document.querySelectorAll(".item");
+
+        // dalla slide activeImage rimuovo la classe "active"
+        slides[activeImage].classList.remove("active");
+
+        // decremento activeImage
+        activeImage--;
+
+        // creo un if che mi riporta alla prima immagine se sforo nell'array
+        if(activeImage < 0 ){
+            activeImage = slides.length - 1;
+        }
+
+        // all'activeImage incrementato (la slide successiva) do la classe "active"
+        slides[activeImage].classList.add("active");
+
+        
+
+    }
+)
 
 
 // creo un evento sul click del button next
@@ -72,7 +103,7 @@ buttonNextEl.addEventListener(
         //incremento activeImage
         activeImage++;
         
-        //creo un if che mi riporta alla prima immagine 
+        //creo un if che mi riporta alla prima immagine se sforo nell'array
         if(activeImage >= slides.length){
             activeImage = 0;
         };
@@ -82,11 +113,3 @@ buttonNextEl.addEventListener(
     }
 )
 
-
-// creo un evento sul click del button prev
-buttonPrevEl.addEventListener(
-    "click",
-    function () {
-
-    }
-)
